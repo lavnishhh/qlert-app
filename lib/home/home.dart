@@ -14,10 +14,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(
-      children: [
-        CameraApp()
-      ],
+    return Scaffold(
+      body: Stack(
+        children: [
+          const CameraApp(),
+          SizedBox.expand(
+            child: DraggableScrollableSheet(
+              builder: (BuildContext context, ScrollController scrollController) {
+                return Container(
+                  color: Colors.blue[100],
+                  child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: 25,
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(title: Text('Item $index'));
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
