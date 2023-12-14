@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../alert/profile_details.dart';
+import '../alert/alert_button.dart';
 
 class AlertPage extends StatefulWidget {
   const AlertPage({super.key});
@@ -20,8 +21,8 @@ class _AlertPageState extends State<AlertPage> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.red,
-                Colors.redAccent
+                Colors.purple.shade100,
+                Colors.purpleAccent
               ], // Replace with your gradient colors
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -87,11 +88,18 @@ class _AlertPageState extends State<AlertPage> {
         ),
 
         Positioned(
-            top: MediaQuery.of(context).size.height / 3,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Profile())
+          top: MediaQuery.of(context).size.height / 3,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Profile(),
+        ),
+        Positioned(
+          top: 110,
+          left: 70,
+          right: 70,
+          child: BreathingButton(),
+        ),
       ],
     );
   }
