@@ -4,7 +4,6 @@ import 'package:qlert/home/camera.dart';
 import '../alert/alertPage.dart';
 
 class HomeScreen extends StatefulWidget {
-
   const HomeScreen({super.key});
 
   @override
@@ -12,7 +11,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +19,16 @@ class _HomeScreenState extends State<HomeScreen> {
           const CameraApp(),
           SizedBox.expand(
             child: DraggableScrollableSheet(
-              builder: (BuildContext context, ScrollController scrollController) {
+              builder:
+                  (BuildContext context, ScrollController scrollController) {
                 return Container(
                   color: Colors.blue[100],
                   child: GestureDetector(
-                    onTap: (){
-                      Navigator.pushReplacement(
+                    onTap: () {
+                      Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const AlertPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const AlertPage()),
                       );
                     },
                     child: const Center(
