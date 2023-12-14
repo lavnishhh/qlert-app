@@ -1,6 +1,7 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:qlert/home/camera.dart';
+
+import '../alert/alertPage.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -23,12 +24,19 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (BuildContext context, ScrollController scrollController) {
                 return Container(
                   color: Colors.blue[100],
-                  child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: 25,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(title: Text('Item $index'));
+                  child: GestureDetector(
+                    onTap: (){
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AlertPage()),
+                      );
                     },
+                    child: const Center(
+                      child: SizedBox(
+                        width: 100,
+                        child: Text("Click here"),
+                      ),
+                    ),
                   ),
                 );
               },

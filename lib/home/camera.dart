@@ -1,10 +1,10 @@
-import 'package:camera/camera.dart';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:qlert/main.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:qlert/alert/alertPage.dart';
 
-/// CameraApp is the Main Application.
 class CameraApp extends StatefulWidget {
-  /// Default Constructor
+
   const CameraApp({super.key});
 
   @override
@@ -12,44 +12,42 @@ class CameraApp extends StatefulWidget {
 }
 
 class _CameraAppState extends State<CameraApp> {
-  late CameraController controller;
+
+  MobileScannerController cameraController = MobileScannerController();
 
   @override
   void initState() {
     super.initState();
-    controller = CameraController(cameras[0], ResolutionPreset.max);
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-          // Handle access errors here.
-            break;
-          default:
-          // Handle other errors here.
-            break;
-        }
-      }
-    });
   }
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!controller.value.isInitialized) {
-      return Container();
-    }
-    return MaterialApp(
-      home: CameraPreview(controller),
+    return MobileScanner(
+      // fit: BoxFit.contain,
+      controller: cameraController,
+      onDetect: (capture) {
+        final List<Barcode> barcodes = capture.barcodes;
+        final Uint8List? image = capture.image;
+        for (final barcode in barcodes) {
+          RegExp regExp = RegExp(r'https:\/\/www\.qlert\.in\/[a-zA-Z0-9]{10}');
+
+          if (regExp.hasMatch(barcode.rawValue!)) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const AlertPage()),
+            );
+            cameraController.dispose();
+            print('URL matches the pattern');
+          } else {
+            print('URL does not match the pattern');
+          }
+        }
+      },
     );
   }
 }
