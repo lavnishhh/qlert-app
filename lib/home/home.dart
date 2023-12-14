@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qlert/home/camera.dart';
 
 import '../alert/alertPage.dart';
+import '../features/user_auth/presentation/pages/login_page.dart';
+import '../features/user_auth/presentation/pages/sign_up_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          // Your existing CameraApp or other widgets
           const CameraApp(),
           SizedBox.expand(
             child: DraggableScrollableSheet(
@@ -23,19 +26,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   (BuildContext context, ScrollController scrollController) {
                 return Container(
                   color: Colors.blue[100],
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AlertPage()),
-                      );
-                    },
-                    child: const Center(
-                      child: SizedBox(
-                        width: 100,
-                        child: Text("Click here"),
-                      ),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                            );
+                          },
+                          child: Text('Login'),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignUpPage(),
+                              ),
+                            );
+                          },
+                          child: Text('Sign Up'),
+                        ),
+                      ],
                     ),
                   ),
                 );

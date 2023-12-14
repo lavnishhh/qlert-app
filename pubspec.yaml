@@ -38,6 +38,10 @@ dependencies:
   flutter_barcode_sdk: ^2.2.6
   firebase_core: ^2.24.2
   mobile_scanner: ^3.5.5
+  cloud_firestore: ^4.13.6
+  firebase_auth: ^4.15.3
+  firebase_storage: ^11.5.6
+  fluttertoast: ^8.2.4
 
 dev_dependencies:
   flutter_test:
