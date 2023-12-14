@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:qlert/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+
 import 'package:mobile_scanner/mobile_scanner.dart';
+
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,20 +17,14 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
-
-
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomeScreen()
-    );
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const HomeScreen());
   }
 }
-
-
