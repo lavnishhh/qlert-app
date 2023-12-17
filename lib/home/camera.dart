@@ -37,9 +37,9 @@ class _CameraAppState extends State<CameraApp> {
           RegExp regExp = RegExp(r'https:\/\/www\.qlert\.in\/[a-zA-Z0-9]{10}');
 
           if (regExp.hasMatch(barcode.rawValue!)) {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const AlertPage()),
+              MaterialPageRoute(builder: (context) => AlertPage(id: barcode.rawValue!.substring(barcode.rawValue!.length - 10))),
             );
             cameraController.dispose();
             print('URL matches the pattern');

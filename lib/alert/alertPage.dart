@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:qlert/home/home.dart';
 
 import '../alert/profile_details.dart';
 import '../alert/alert_button.dart';
 
 class AlertPage extends StatefulWidget {
-  const AlertPage({super.key});
+
+  final String id;
+
+  const AlertPage({super.key, required this.id});
 
   @override
   State<AlertPage> createState() => _AlertPageState();
 }
 
 class _AlertPageState extends State<AlertPage> {
+
   @override
   Widget build(BuildContext context) {
+
     return Stack(
       children: [
         // Gradient container that extends behind the AppBar
@@ -44,6 +50,7 @@ class _AlertPageState extends State<AlertPage> {
                 color: Colors.white,
               ),
               onPressed: () {
+                print(Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen())));
                 Navigator.pop(context);
                 // Navigator.push(
                 //   context,

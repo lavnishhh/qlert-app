@@ -114,7 +114,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     caseSensitive: false,
                     multiLine: false,
                   );
-
                   if(!emailRegExp.hasMatch(_emailController.text)){
                     Fluttertoast.showToast(msg: "Please enter a valid email.");
                     return;
@@ -122,9 +121,13 @@ class _SignUpPageState extends State<SignUpPage> {
 
 
                   RegExp phoneRegex = RegExp(r'^[0-9]{10}$');
-
                   if(!phoneRegex.hasMatch(_mobileController.text)){
                     Fluttertoast.showToast(msg: "Please enter a valid phone number.");
+                    return;
+                  }
+
+                  if(int.tryParse(_ageController.text)!=null){
+                    Fluttertoast.showToast(msg: "Please enter a valid age.");
                     return;
                   }
 
