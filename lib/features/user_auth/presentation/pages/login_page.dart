@@ -7,7 +7,6 @@ import 'package:qlert/features/user_auth/presentation/widgets/form_container_wid
 
 import '../../../global/common/toast.dart';
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
-import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,8 +18,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final FirebaseAuthService _auth = FirebaseAuthService();
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
@@ -72,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: 50,
                   decoration: BoxDecoration(
                       color: Colors.teal,
-                      borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(50)),
                   child: Center(
                     child: Text(
                       "Login",

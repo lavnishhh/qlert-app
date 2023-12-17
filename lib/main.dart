@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:qlert/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import 'package:mobile_scanner/mobile_scanner.dart';
-
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Obtain a list of the available cameras on the device
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

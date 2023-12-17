@@ -1,14 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qlert/alert/profile_details.dart';
-import 'package:qlert/features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
+import 'package:qlert/authentication/authentication.dart';
 import 'package:qlert/features/user_auth/presentation/pages/login_page.dart';
 import 'package:qlert/features/user_auth/presentation/widgets/form_container_widget.dart';
 
 import '../../../global/common/toast.dart';
-import 'home_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -18,20 +16,19 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final FirebaseAuthService _auth = FirebaseAuthService();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _ageController = TextEditingController();
-  TextEditingController _genderController = TextEditingController();
-  TextEditingController _bloodGroupController = TextEditingController();
-  TextEditingController _heightController = TextEditingController();
-  TextEditingController _weightController = TextEditingController();
-  TextEditingController _mobileController = TextEditingController();
-  TextEditingController _medicalHistoryController = TextEditingController();
-  TextEditingController _emergencyContact1Controller = TextEditingController();
-  TextEditingController _emergencyContact2Controller = TextEditingController();
-  TextEditingController _vehicleNumberController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
+  final TextEditingController _bloodGroupController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _medicalHistoryController = TextEditingController();
+  final TextEditingController _emergencyContact1Controller = TextEditingController();
+  final TextEditingController _emergencyContact2Controller = TextEditingController();
+  final TextEditingController _vehicleNumberController = TextEditingController();
 
   @override
   void dispose() {
@@ -55,7 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign up"),
+        title: const Text("Sign up"),
         backgroundColor: Colors.teal,
       ),
       body: SingleChildScrollView(
@@ -64,30 +61,73 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 "Sign up to Q-lert",
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
-              buildTextField("Name", _nameController),
+              const SizedBox(height: 20),
+              const SizedBox(height: 20),
+              const Text(
+                "Account Data",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
               buildTextField("Email", _emailController),
               buildTextField("Password", _passwordController, isPassword: true),
+              const Text(
+                "Personal Data",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              buildTextField("Name", _nameController),
+              buildTextField("Mobile Number", _mobileController),
+              const SizedBox(height: 20),
+              const Text(
+                "Medical Data",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
               buildTextField("Age", _ageController),
               buildTextField("Gender", _genderController),
               buildTextField("Blood Group", _bloodGroupController),
               buildTextField("Height (in cm)", _heightController),
               buildTextField("Weight (in kgs)", _weightController),
-              buildTextField("Mobile Number", _mobileController),
               buildTextField("Medical History", _medicalHistoryController),
+              const SizedBox(height: 20),
+              const Text(
+                "Emergency Contacts Data",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
               buildTextField(
                   "Emergency Contact 1", _emergencyContact1Controller),
               buildTextField(
                   "Emergency Contact 2", _emergencyContact2Controller),
               buildTextField("Vehicle Number", _vehicleNumberController),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
+
+                  RegExp emailRegExp = RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                    caseSensitive: false,
+                    multiLine: false,
+                  );
+
+                  if(!emailRegExp.hasMatch(_emailController.text)){
+                    Fluttertoast.showToast(msg: "Please enter a valid email.");
+                    return;
+                  }
+
+
+                  RegExp phoneRegex = RegExp(r'^[0-9]{10}$');
+
+                  if(!phoneRegex.hasMatch(_mobileController.text)){
+                    Fluttertoast.showToast(msg: "Please enter a valid phone number.");
+                    return;
+                  }
+
                   _signUp();
                 },
                 child: Container(
@@ -95,9 +135,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   height: 50,
                   decoration: BoxDecoration(
                     color: Colors.teal,
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(50),
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       "Sign Up",
                       style: TextStyle(
@@ -109,22 +149,22 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already have an account?"),
-                  SizedBox(
+                  const Text("Already have an account?"),
+                  const SizedBox(
                     width: 5,
                   ),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
+                          MaterialPageRoute(builder: (context) => const LoginPage()),
                           (route) => false);
                     },
-                    child: Text("Log in",
+                    child: const Text("Log in",
                         style: TextStyle(
                           color: Colors.teal,
                           fontWeight: FontWeight.bold,
@@ -141,20 +181,18 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget buildTextField(String labelText, TextEditingController controller,
       {bool isPassword = false}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: TextFormField(
-        controller: controller,
-        obscureText: isPassword,
-        decoration: InputDecoration(
-          labelText: labelText,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(labelText),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: FormContainerWidget(
+            controller: controller,
+            isPasswordField: isPassword,
           ),
-          filled: true,
-          fillColor: Colors.teal.withOpacity(0.3),
         ),
-      ),
+      ],
     );
   }
 
@@ -163,41 +201,44 @@ class _SignUpPageState extends State<SignUpPage> {
       String email = _emailController.text;
       String password = _passwordController.text;
 
-      UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      AuthenticationState authenticationState = await Authentication().signUp(email, password);
 
-      User? user = userCredential.user;
-
-      if (user != null) {
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-          'userId': user.uid, // Store the user ID for reference
-          'name': _nameController.text,
-          'age': _ageController.text,
-          'gender': _genderController.text,
-          'bloodGroup': _bloodGroupController.text,
-          'height': _heightController.text,
-          'weight': _weightController.text,
-          'mobileNumber': _mobileController.text,
-          'medicalHistory': _medicalHistoryController.text,
-          'emergencyContact1': _emergencyContact1Controller.text,
-          'emergencyContact2': _emergencyContact2Controller.text,
-          'vehicleNumber': _vehicleNumberController.text,
-          // Add more fields as needed
-        });
-
-        showToast(message: "User is successfully created");
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => Profile()),
-          (route) => false,
-        );
-      } else {
-        showToast(message: "User creation failed");
+      switch(authenticationState){
+        case AuthenticationState.alreadyExists:
+          Fluttertoast.showToast(msg: "Account already exists. Please Log in instead.");
+          return;
+        case AuthenticationState.doesNotExist:
+          Fluttertoast.showToast(msg: "Account has been banned/blocked. Please contact support.");
+          return;
+        case AuthenticationState.error:
+          Fluttertoast.showToast(msg: "Error creating account. Please try again later.");
+          return;
+        case AuthenticationState.authenticated:
+          // TODO: Handle this case.
       }
-    } catch (e) {
+
+      await Authentication().updateDataForUser({
+        'name': _nameController.text,
+        'age': _ageController.text,
+        'gender': _genderController.text,
+        'bloodGroup': _bloodGroupController.text,
+        'height': _heightController.text,
+        'weight': _weightController.text,
+        'mobileNumber': _mobileController.text,
+        'medicalHistory': _medicalHistoryController.text,
+        'emergencyContact1': _emergencyContact1Controller.text,
+        'emergencyContact2': _emergencyContact2Controller.text,
+        'vehicleNumber': _vehicleNumberController.text,
+        // Add more fields as needed
+      });
+
+      showToast(message: "User is successfully created");
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const Profile()),
+        (route) => false,
+      );
+        } catch (e) {
       print("Error creating user: $e");
       showToast(message: "Error occurred: $e");
     }

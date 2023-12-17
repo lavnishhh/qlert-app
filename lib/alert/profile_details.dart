@@ -1,14 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+  const Profile({super.key});
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+
+  @override
+  void initState() {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
-      child: ListView(
-        padding: EdgeInsets.zero,
+
+    return SizedBox(
+      height: 2000,
+      child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 25, 30, 0),
@@ -16,7 +31,7 @@ class Profile extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(50),
                   boxShadow: [
                     BoxShadow(
                         offset: const Offset(0, 5),
@@ -61,7 +76,7 @@ class Profile extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               decoration: const BoxDecoration(
                   borderRadius:
-                      BorderRadius.only(topLeft: Radius.circular(200))),
+                  BorderRadius.only(topLeft: Radius.circular(200))),
               child: GridView.count(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -94,7 +109,7 @@ class Profile extends StatelessWidget {
               height: 250,
               decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(50),
                   boxShadow: [
                     BoxShadow(
                         offset: const Offset(0, 5),
@@ -131,7 +146,7 @@ class Profile extends StatelessWidget {
                     Text(
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
                       style:
-                          TextStyle(color: Colors.grey.shade700, fontSize: 14),
+                      TextStyle(color: Colors.grey.shade700, fontSize: 14),
                     )
                   ],
                 ),
@@ -145,11 +160,11 @@ class Profile extends StatelessWidget {
   }
 
   itemDashboard(String title, String data, IconData iconData, Color background,
-          double size) =>
+      double size) =>
       Container(
         decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(50),
             boxShadow: [
               BoxShadow(
                   offset: const Offset(0, 5),
@@ -181,3 +196,4 @@ class Profile extends StatelessWidget {
         ),
       );
 }
+
