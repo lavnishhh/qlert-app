@@ -74,7 +74,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             ),
           ],
         ),
-        Profile(uid: FirebaseAuth.instance.currentUser!.uid,)
+        Profile(uid: FirebaseAuth.instance.currentUser!.uid, confidential: false,)
       ],
     );
   }

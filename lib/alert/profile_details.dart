@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Profile extends StatefulWidget {
-  final String uid;
 
-  const Profile({super.key, required this.uid});
+  final String uid;
+  final bool confidential;
+
+  const Profile({super.key, required this.uid, required this.confidential});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -32,7 +34,7 @@ class _ProfileState extends State<Profile> {
     'emergencyContact2': "Not Found",
     'vehicleNumber': "Not Found",
   };
-  
+
   BoxShadow boxShadow = BoxShadow(
       offset: const Offset(0, 0),
       color: Colors.black.withOpacity(.2),
@@ -57,13 +59,13 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
 
     return SizedBox(
-      height: 1200,
+      height: widget.confidential ? 900 : 1500,
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 55, 0, 20),
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
             child: Container(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
@@ -76,9 +78,9 @@ class _ProfileState extends State<Profile> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(0.5),
                           decoration: const BoxDecoration(
-                            color: Colors.grey,
+                            color: Colors.teal,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
@@ -93,7 +95,7 @@ class _ProfileState extends State<Profile> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(height: 10,),
                   Text(
                     'uid:${widget.uid}',
                     style: TextStyle(
@@ -101,6 +103,26 @@ class _ProfileState extends State<Profile> {
                   )
                 ],
               ),
+            ),
+          ),
+          widget.confidential ? Container() : Container(
+            // padding: const EdgeInsets.symmetric(horizontal: 30),
+            decoration: const BoxDecoration(
+                borderRadius:
+                BorderRadius.only(topLeft: Radius.circular(200))),
+            child: GridView.count(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+              children: [
+                itemDashboard(
+                    'Mobile', data['mobileNumber'], Icons.call, Colors.deepOrange, 18),
+                itemDashboard('Email', data['email'],
+                    Icons.email_rounded, Colors.green, 14),
+              ],
             ),
           ),
           Container(
@@ -117,25 +139,21 @@ class _ProfileState extends State<Profile> {
               mainAxisSpacing: 20,
               children: [
                 itemDashboard(
-                    'Mobile', data['mobileNumber'], Icons.call, Colors.deepOrange, 18),
-                itemDashboard('Email', data['email'],
-                    Icons.email_rounded, Colors.green, 14),
-                itemDashboard(
                     'Age', data['age'], Icons.person_2_rounded, Colors.purple, 18),
                 itemDashboard(
                     'Gender', data['gender'], Icons.male_rounded, Colors.brown, 18),
-                itemDashboard('Blood group', data['bloodGroup'], Icons.bloodtype,
+                itemDashboard('Blood Group', data['bloodGroup'], Icons.bloodtype,
                     Colors.indigo, 18),
                 itemDashboard('Height', data['height'], Icons.height, Colors.teal, 18),
                 itemDashboard(
                     'Weight', data['weight'], Icons.scale_rounded, Colors.blue, 18),
                 itemDashboard('Vehicle No', data['vehicleNumber'],
-                    Icons.car_crash_outlined, Colors.pinkAccent, 18),
+                    Icons.car_crash_outlined, Colors.red, 18),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
+          widget.confidential ? Container() : Padding(
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -149,12 +167,63 @@ class _ProfileState extends State<Profile> {
                   Container(
                       padding: const EdgeInsets.all(10),
                       decoration: const BoxDecoration(
-                        color: Colors.green,
+                        color: Colors.white,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
+                        Icons.emergency,
+                        color: Colors.red,
+                        size: 30,
+                      )),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 10,),
+                      Text(
+                        'Emergency Contacts',
+                        style: TextStyle(color: Colors.black, fontSize: 30),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "+91 ${data['emergencyContact1']}",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.grey.shade700, fontSize: 16),
+                      ),
+                      Text(
+                        "+91 ${data['emergencyContact2']}",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.grey.shade700, fontSize: 16),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    boxShadow
+                  ]),
+              child: Column(
+                children: [
+                  Container(
+                      padding: const EdgeInsets.all(10),
+                      child: const Icon(
                         Icons.medical_information,
-                        color: Colors.white,
+                        color: Colors.green,
                         size: 30,
                       )),
                   const Row(
@@ -198,15 +267,11 @@ class _ProfileState extends State<Profile> {
           children: [
             Container(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: background,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(iconData, color: Colors.white)),
-            const SizedBox(height: 8),
+                child: Icon(iconData, color: background, size: 30,)),
+            const SizedBox(height: 4),
             Text(
-              title.toUpperCase(),
-              style: const TextStyle(color: Colors.black, fontSize: 20),
+              title,
+              style: const TextStyle(color: Colors.black, fontSize: 22),
             ),
             const SizedBox(height: 4),
             Text(

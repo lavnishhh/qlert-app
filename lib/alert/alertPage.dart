@@ -28,14 +28,14 @@ class _AlertPageState extends State<AlertPage> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.purple.shade100,
-                  Colors.purpleAccent
+                  Colors.tealAccent,
+                  Colors.teal.shade400
                 ], // Replace with your gradient colors
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
             ),
-            child: Center(child: SizedBox()),
+            child: const Center(child: SizedBox()),
           ),
           // AppBar with a transparent background
           Positioned(
@@ -46,7 +46,7 @@ class _AlertPageState extends State<AlertPage> {
               backgroundColor: Colors.transparent,
               elevation: 0,
               leading: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back_ios_new_rounded,
                   color: Colors.white,
                 ),
@@ -71,40 +71,37 @@ class _AlertPageState extends State<AlertPage> {
             child: Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.white,
-                      Colors.white70
-                    ], // Replace with your gradient colors
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ), // Set your desired background color
+                  color: Colors.white,// Set your desired background color
                   borderRadius: BorderRadius.circular(
-                      30), // Adjust the border-radius for rounded corners
+                      20), // Adjust the border-radius for rounded corners
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.5),
+                      color: Colors.black.withOpacity(0.25),
                       spreadRadius: 1,
                       blurRadius: 10,
-                      offset: Offset(0, -3),
+                      offset: const Offset(0, -3),
                     ),
                   ],
                 ),
                 // Replace with your desired height
+                child: SingleChildScrollView(child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: Profile(uid: widget.id, confidential: true,),
+                )),
               ),
             ),
           ),
 
-          Positioned(
-            top: MediaQuery.of(context).size.height / 3,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: SingleChildScrollView(child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-              child: Profile(uid: widget.id,),
-            )),
-          ),
+          // Positioned(
+          //   top: MediaQuery.of(context).size.height / 3,
+          //   left: 0,
+          //   right: 0,
+          //   bottom: 0,
+          //   child: SingleChildScrollView(child: Padding(
+          //     padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+          //     child: Profile(uid: widget.id,),
+          //   )),
+          // ),
           Positioned(
             top: 110,
             left: 70,
