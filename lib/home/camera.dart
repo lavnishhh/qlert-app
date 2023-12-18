@@ -39,9 +39,10 @@ class _CameraAppState extends State<CameraApp> {
           if (regExp.hasMatch(barcode.rawValue!)) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AlertPage(id: barcode.rawValue!.substring(barcode.rawValue!.length - 10))),
+              MaterialPageRoute(builder: (context) => AlertPage(id: barcode.rawValue!.substring(barcode.rawValue!.length - 28))),
             );
             cameraController.dispose();
+            print(barcode.rawValue!.substring(barcode.rawValue!.length - 28));
             print('URL matches the pattern');
           } else {
             print('URL does not match the pattern');

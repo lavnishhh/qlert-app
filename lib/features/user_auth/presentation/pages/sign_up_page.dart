@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -5,6 +6,7 @@ import 'package:qlert/alert/profile_details.dart';
 import 'package:qlert/authentication/authentication.dart';
 import 'package:qlert/features/user_auth/presentation/pages/login_page.dart';
 import 'package:qlert/features/user_auth/presentation/widgets/form_container_widget.dart';
+import 'package:qlert/home/home.dart';
 
 import '../../../global/common/toast.dart';
 
@@ -223,6 +225,7 @@ class _SignUpPageState extends State<SignUpPage> {
       await Authentication().updateDataForUser({
         'name': _nameController.text,
         'age': _ageController.text,
+        'email': _emailController.text,
         'gender': _genderController.text,
         'bloodGroup': _bloodGroupController.text,
         'height': _heightController.text,
@@ -238,7 +241,7 @@ class _SignUpPageState extends State<SignUpPage> {
       showToast(message: "User is successfully created");
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const Profile()),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
         (route) => false,
       );
         } catch (e) {

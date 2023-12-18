@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qlert/alert/profile_details.dart';
 
@@ -72,7 +74,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             ),
           ],
         ),
-        const Profile()
+        Profile(uid: FirebaseAuth.instance.currentUser!.uid,)
       ],
     );
   }

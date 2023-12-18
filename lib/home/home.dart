@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
                     color: Colors.white,
                   ),
-                  padding: EdgeInsets.fromLTRB(10, 10 +  MediaQuery.of(context).viewPadding.top, 10, 10),
+                  padding: EdgeInsets.fromLTRB(20, 10 +  MediaQuery.of(context).viewPadding.top, 20, 10),
                   child: Center(
                     child: sheetWidget,
                   ),

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:qlert/alert/profile_details.dart';
 import 'package:qlert/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:qlert/features/user_auth/presentation/widgets/form_container_widget.dart';
+import 'package:qlert/home/home.dart';
 
 import '../../../global/common/toast.dart';
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
@@ -122,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null) {
       showToast(message: "User is successfully signed in");
       Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) => Profile()), (route) => false);
+          MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
     } else {
       showToast(message: "Some error happened ");
     }

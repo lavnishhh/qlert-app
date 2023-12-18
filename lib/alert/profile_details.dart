@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final String uid;
+
+  const Profile({super.key, required this.uid});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -12,9 +17,39 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
 
+  Map<String, dynamic> data = {
+    'email':'Not Found',
+
+    'name': "Not Found",
+    'age': "Not Found",
+    'gender': "Not Found",
+    'bloodGroup': "Not Found",
+    'height': "Not Found",
+    'weight': "Not Found",
+    'mobileNumber': "Not Found",
+    'medicalHistory': "Not Found",
+    'emergencyContact1': "Not Found",
+    'emergencyContact2': "Not Found",
+    'vehicleNumber': "Not Found",
+  };
+  
+  BoxShadow boxShadow = BoxShadow(
+      offset: const Offset(0, 0),
+      color: Colors.black.withOpacity(.2),
+      spreadRadius: 1,
+      blurRadius: 5);
+
   @override
   void initState() {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    FirebaseFirestore.instance.collection('users').doc(widget.uid).get().then((DocumentSnapshot documentSnapshot){
+      if(documentSnapshot.exists){
+        setState(() {
+          data = documentSnapshot.data() as Map<String, dynamic>;
+        });
+      }
+    });
+
     super.initState();
   }
 
@@ -22,134 +57,124 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
 
     return SizedBox(
-      height: 2000,
+      height: 1200,
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(30, 25, 30, 0),
+            padding: const EdgeInsets.fromLTRB(0, 55, 0, 20),
             child: Container(
-              height: 100,
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
               decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
-                    BoxShadow(
-                        offset: const Offset(0, 5),
-                        color: Colors.black.withOpacity(.2),
-                        spreadRadius: 2,
-                        blurRadius: 10)
+                    boxShadow
                   ]),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Column(
                 children: [
-                  Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.account_circle,
-                        color: Colors.white,
-                        size: 40,
-                      )),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            color: Colors.grey,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.account_circle,
+                            color: Colors.white,
+                            size: 30,
+                          )),
+                      const SizedBox(width: 10,),
                       Text(
-                        'Batman',
-                        style: TextStyle(color: Colors.black, fontSize: 30),
+                        data['name'],
+                        style: const TextStyle(color: Colors.black, fontSize: 30),
                       ),
-                      Text(
-                        'uid:98562387236',
-                        style: TextStyle(
-                            color: Colors.grey.shade700, fontSize: 14),
-                      )
                     ],
+                  ),
+                  const SizedBox(height: 20,),
+                  Text(
+                    'uid:${widget.uid}',
+                    style: TextStyle(
+                        color: Colors.grey.shade700, fontSize: 14),
                   )
                 ],
               ),
             ),
           ),
           Container(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              decoration: const BoxDecoration(
-                  borderRadius:
-                  BorderRadius.only(topLeft: Radius.circular(200))),
-              child: GridView.count(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 20,
-                children: [
-                  itemDashboard(
-                      'Mobile', '994567879', Icons.call, Colors.deepOrange, 18),
-                  itemDashboard('Email', 'dhonibaba@email.com',
-                      Icons.email_rounded, Colors.green, 14),
-                  itemDashboard(
-                      'Age', '22', Icons.person_2_rounded, Colors.purple, 18),
-                  itemDashboard(
-                      'Gender', 'M', Icons.male_rounded, Colors.brown, 18),
-                  itemDashboard('Blood group', 'O+ve', Icons.bloodtype,
-                      Colors.indigo, 18),
-                  itemDashboard('Height', "6'0", Icons.height, Colors.teal, 18),
-                  itemDashboard(
-                      'Weight', '69kg', Icons.scale_rounded, Colors.blue, 18),
-                  itemDashboard('Vehicle No', 'KA 03 FF 1234',
-                      Icons.car_crash_outlined, Colors.pinkAccent, 18),
-                ],
-              ),
+            // padding: const EdgeInsets.symmetric(horizontal: 30),
+            decoration: const BoxDecoration(
+                borderRadius:
+                BorderRadius.only(topLeft: Radius.circular(200))),
+            child: GridView.count(
+              padding: const EdgeInsets.all(0),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20,
+              children: [
+                itemDashboard(
+                    'Mobile', data['mobileNumber'], Icons.call, Colors.deepOrange, 18),
+                itemDashboard('Email', data['email'],
+                    Icons.email_rounded, Colors.green, 14),
+                itemDashboard(
+                    'Age', data['age'], Icons.person_2_rounded, Colors.purple, 18),
+                itemDashboard(
+                    'Gender', data['gender'], Icons.male_rounded, Colors.brown, 18),
+                itemDashboard('Blood group', data['bloodGroup'], Icons.bloodtype,
+                    Colors.indigo, 18),
+                itemDashboard('Height', data['height'], Icons.height, Colors.teal, 18),
+                itemDashboard(
+                    'Weight', data['weight'], Icons.scale_rounded, Colors.blue, 18),
+                itemDashboard('Vehicle No', data['vehicleNumber'],
+                    Icons.car_crash_outlined, Colors.pinkAccent, 18),
+              ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(30, 25, 30, 0),
+            padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
             child: Container(
-              height: 250,
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(50),
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
-                    BoxShadow(
-                        offset: const Offset(0, 5),
-                        color: Colors.black.withOpacity(.2),
-                        spreadRadius: 2,
-                        blurRadius: 10)
+                    boxShadow
                   ]),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.medical_information,
-                          color: Colors.white,
-                          size: 35,
-                        )),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Medical history',
-                      style: TextStyle(color: Colors.black, fontSize: 25),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-                      style:
-                      TextStyle(color: Colors.grey.shade700, fontSize: 14),
-                    )
-                  ],
-                ),
+              child: Column(
+                children: [
+                  Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.medical_information,
+                        color: Colors.white,
+                        size: 30,
+                      )),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 10,),
+                      Text(
+                        'Medical Info',
+                        style: TextStyle(color: Colors.black, fontSize: 30),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20,),
+                  Text(
+                    data['medicalHistory'],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.grey.shade700, fontSize: 14),
+                  )
+                ],
               ),
             ),
           ),
@@ -164,13 +189,9 @@ class _ProfileState extends State<Profile> {
       Container(
         decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(20),
             boxShadow: [
-              BoxShadow(
-                  offset: const Offset(0, 5),
-                  color: Colors.black.withOpacity(.2),
-                  spreadRadius: 2,
-                  blurRadius: 10)
+              boxShadow
             ]),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -185,7 +206,7 @@ class _ProfileState extends State<Profile> {
             const SizedBox(height: 8),
             Text(
               title.toUpperCase(),
-              style: TextStyle(color: Colors.black, fontSize: 20),
+              style: const TextStyle(color: Colors.black, fontSize: 20),
             ),
             const SizedBox(height: 4),
             Text(
