@@ -5,6 +5,7 @@ import 'package:qlert/home/camera.dart';
 import 'package:qlert/home/profile.dart';
 import '../authentication/authentication.dart';
 import '../features/user_auth/presentation/pages/login_page.dart';
+import 'package:qlert/home/vehicleSearch.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,13 +17,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   SignInState isUserSignedIn = SignInState.loading;
   Widget sheetWidget = Container();
-  double maxHeight = 0.3;
+  double maxHeight = 0.5;
 
   @override
   void initState() {
     super.initState();
 
-    maxHeight = 0.3;
+    maxHeight = 0.5;
     sheetWidget = const SignInPrompts();
 
     Authentication().checkUserSignIn().then((value) {
@@ -34,16 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
     if (isUserSignedIn == SignInState.loading) {
       sheetWidget = const Center(
         child: CircularProgressIndicator(),
       );
     } else {
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
-        if(user != null){
-          if(sheetWidget is UserProfilePage){
+        if (user != null) {
+          if (sheetWidget is UserProfilePage) {
             return;
           }
           setState(() {
@@ -52,9 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
           });
           return;
         }
-        if(sheetWidget is! SignInPrompts){
+        if (sheetWidget is! SignInPrompts) {
           setState(() {
-            maxHeight = 0.3;
+            maxHeight = 0.5;
             sheetWidget = const SignInPrompts();
           });
         }
@@ -96,12 +95,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 4,
                           decoration: BoxDecoration(
                               color: Colors.grey.shade400,
-                              borderRadius: BorderRadius.circular(10)
-                          ),
+                              borderRadius: BorderRadius.circular(10)),
                         ),
                       ),
+                      VehicleSearch(),
                       Padding(
-                        padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).viewPadding.top, 20, 10),
+                        padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
                         child: Center(
                           child: sheetWidget,
                         ),
