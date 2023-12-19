@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qlert/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:qlert/home/camera.dart';
@@ -13,14 +14,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   SignInState isUserSignedIn = SignInState.loading;
 
   @override
   void initState() {
     super.initState();
 
-    Authentication().checkUserSignIn().then((value){
+    Authentication().checkUserSignIn().then((value) {
       setState(() {
         isUserSignedIn = value;
       });
@@ -29,22 +29,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget sheetWidget = Container();
 
     double maxHeight = 0.3;
 
-    if(isUserSignedIn == SignInState.loading){
+    if (isUserSignedIn == SignInState.loading) {
       sheetWidget = const Center(
         child: CircularProgressIndicator(),
       );
-    }
-    else if(isUserSignedIn == SignInState.notSignedIn){
+    } else if (isUserSignedIn == SignInState.notSignedIn) {
       sheetWidget = const SignInPrompts();
-    }
-    else if(isUserSignedIn == SignInState.signedIn){
+    } else if (isUserSignedIn == SignInState.signedIn) {
       maxHeight = 1;
-      sheetWidget = const UserProfilePage();
+      sheetWidget = UserProfilePage();
     }
 
     return Scaffold(
@@ -57,16 +54,18 @@ class _HomeScreenState extends State<HomeScreen> {
             maxChildSize: maxHeight,
             snap: true,
             snapSizes: const [0.3],
-            builder:
-                (BuildContext context, ScrollController scrollController) {
+            builder: (BuildContext context, ScrollController scrollController) {
               return SingleChildScrollView(
                 controller: scrollController,
                 child: Container(
                   decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)),
                     color: Colors.white,
                   ),
-                  padding: EdgeInsets.fromLTRB(20, 10 +  MediaQuery.of(context).viewPadding.top, 20, 10),
+                  padding: EdgeInsets.fromLTRB(
+                      20, 10 + MediaQuery.of(context).viewPadding.top, 20, 10),
                   child: Center(
                     child: sheetWidget,
                   ),
@@ -90,7 +89,6 @@ class SignInPrompts extends StatefulWidget {
 class _SignInPromptsState extends State<SignInPrompts> {
   @override
   Widget build(BuildContext context) {
-
     double height = MediaQuery.of(context).size.height;
 
     double maxHeight = 0.3 * height;
@@ -113,8 +111,7 @@ class _SignInPromptsState extends State<SignInPrompts> {
               width: double.infinity,
               height: 50,
               decoration: BoxDecoration(
-                  color: Colors.teal,
-                  borderRadius: BorderRadius.circular(50)),
+                  color: Colors.teal, borderRadius: BorderRadius.circular(50)),
               child: const Center(
                 child: Text(
                   "Login",
@@ -142,8 +139,7 @@ class _SignInPromptsState extends State<SignInPrompts> {
               width: double.infinity,
               height: 50,
               decoration: BoxDecoration(
-                  color: Colors.teal,
-                  borderRadius: BorderRadius.circular(50)),
+                  color: Colors.teal, borderRadius: BorderRadius.circular(50)),
               child: const Center(
                 child: Text(
                   "Sign Up",
@@ -160,4 +156,3 @@ class _SignInPromptsState extends State<SignInPrompts> {
     );
   }
 }
-

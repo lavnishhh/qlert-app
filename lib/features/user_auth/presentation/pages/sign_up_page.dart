@@ -27,10 +27,14 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
-  final TextEditingController _medicalHistoryController = TextEditingController();
-  final TextEditingController _emergencyContact1Controller = TextEditingController();
-  final TextEditingController _emergencyContact2Controller = TextEditingController();
-  final TextEditingController _vehicleNumberController = TextEditingController();
+  final TextEditingController _medicalHistoryController =
+      TextEditingController();
+  final TextEditingController _emergencyContact1Controller =
+      TextEditingController();
+  final TextEditingController _emergencyContact2Controller =
+      TextEditingController();
+  final TextEditingController _vehicleNumberController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -110,25 +114,24 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
-
                   RegExp emailRegExp = RegExp(
                     r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                     caseSensitive: false,
                     multiLine: false,
                   );
-                  if(!emailRegExp.hasMatch(_emailController.text)){
+                  if (!emailRegExp.hasMatch(_emailController.text)) {
                     Fluttertoast.showToast(msg: "Please enter a valid email.");
                     return;
                   }
 
-
                   RegExp phoneRegex = RegExp(r'^[0-9]{10}$');
-                  if(!phoneRegex.hasMatch(_mobileController.text)){
-                    Fluttertoast.showToast(msg: "Please enter a valid phone number.");
+                  if (!phoneRegex.hasMatch(_mobileController.text)) {
+                    Fluttertoast.showToast(
+                        msg: "Please enter a valid phone number.");
                     return;
                   }
 
-                  if(int.tryParse(_ageController.text)!=null){
+                  if (int.tryParse(_ageController.text) == null) {
                     Fluttertoast.showToast(msg: "Please enter a valid age.");
                     return;
                   }
@@ -166,7 +169,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     onTap: () {
                       Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()),
                           (route) => false);
                     },
                     child: const Text("Log in",
@@ -206,20 +210,24 @@ class _SignUpPageState extends State<SignUpPage> {
       String email = _emailController.text;
       String password = _passwordController.text;
 
-      AuthenticationState authenticationState = await Authentication().signUp(email, password);
+      AuthenticationState authenticationState =
+          await Authentication().signUp(email, password);
 
-      switch(authenticationState){
+      switch (authenticationState) {
         case AuthenticationState.alreadyExists:
-          Fluttertoast.showToast(msg: "Account already exists. Please Log in instead.");
+          Fluttertoast.showToast(
+              msg: "Account already exists. Please Log in instead.");
           return;
         case AuthenticationState.doesNotExist:
-          Fluttertoast.showToast(msg: "Account has been banned/blocked. Please contact support.");
+          Fluttertoast.showToast(
+              msg: "Account has been banned/blocked. Please contact support.");
           return;
         case AuthenticationState.error:
-          Fluttertoast.showToast(msg: "Error creating account. Please try again later.");
+          Fluttertoast.showToast(
+              msg: "Error creating account. Please try again later.");
           return;
         case AuthenticationState.authenticated:
-          // TODO: Handle this case.
+        // TODO: Handle this case.
       }
 
       await Authentication().updateDataForUser({
@@ -244,7 +252,7 @@ class _SignUpPageState extends State<SignUpPage> {
         MaterialPageRoute(builder: (context) => HomeScreen()),
         (route) => false,
       );
-        } catch (e) {
+    } catch (e) {
       print("Error creating user: $e");
       showToast(message: "Error occurred: $e");
     }
