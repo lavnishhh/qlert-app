@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     maxHeight = 0.3;
     sheetWidget = const SignInPrompts();
 
-    Authentication().checkUserSignIn().then((value) {
+    FirebaseBackend().checkUserSignIn().then((value) {
       setState(() {
         isUserSignedIn = value;
       });
@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     } else {
       FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        print(user);
         if(user != null){
           if(sheetWidget is UserProfilePage){
             return;

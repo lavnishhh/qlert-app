@@ -128,7 +128,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         ),
         GestureDetector(
           onTap: ()async{
-            Authentication().signOut();
+            FirebaseBackend().signOut();
           },
           child: Container(
             padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),

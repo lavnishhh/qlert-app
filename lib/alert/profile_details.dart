@@ -57,6 +57,8 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+
+    print(data);
     return SingleChildScrollView(
       child: Column(
         children: [

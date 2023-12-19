@@ -1,17 +1,20 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 enum AuthenticationState {authenticated, alreadyExists, doesNotExist, error}
 enum SignInState {signedIn, notSignedIn, loading, error}
 
-class Authentication {
-  static final Authentication _instance = Authentication._internal();
+class FirebaseBackend {
+  static final FirebaseBackend _instance = FirebaseBackend._internal();
 
-  factory Authentication() {
+  factory FirebaseBackend() {
     return _instance;
   }
 
-  Authentication._internal();
+  FirebaseBackend._internal();
 
   Future<AuthenticationState> signUp(String email, String password) async {
 
@@ -91,6 +94,22 @@ class Authentication {
     } catch (e) {
       print('Error checking sign out status: $e');
       return SignInState.error; // Failed to sign out or error occurred
+    }
+  }
+
+  Future<String?> uploadImageToFirebaseStorage(File imageFile,String path) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage.ref().child(path);
+
+      UploadTask uploadTask = ref.putFile(imageFile);
+      TaskSnapshot snapshot = await uploadTask.whenComplete(() => null);
+
+      String imageUrl = await snapshot.ref.getDownloadURL();
+      return imageUrl;
+    } catch (e) {
+      print('Error uploading image to Firebase Storage: $e');
+      return null;
     }
   }
 
