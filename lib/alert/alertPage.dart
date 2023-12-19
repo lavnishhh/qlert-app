@@ -5,7 +5,6 @@ import '../alert/profile_details.dart';
 import '../alert/alert_button.dart';
 
 class AlertPage extends StatefulWidget {
-
   final String id;
 
   const AlertPage({super.key, required this.id});
@@ -15,10 +14,8 @@ class AlertPage extends StatefulWidget {
 }
 
 class _AlertPageState extends State<AlertPage> {
-
   @override
   Widget build(BuildContext context) {
-
     return Material(
       child: Stack(
         children: [
@@ -51,8 +48,11 @@ class _AlertPageState extends State<AlertPage> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  print(Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeScreen())));
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomeScreen()));
+                  // Navigator.pop(context);
                   // Navigator.push(
                   //   context,
                   //   MaterialPageRoute(builder: (context) => const MyHomePage()),
@@ -71,7 +71,7 @@ class _AlertPageState extends State<AlertPage> {
             child: Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,// Set your desired background color
+                  color: Colors.white, // Set your desired background color
                   borderRadius: BorderRadius.circular(
                       20), // Adjust the border-radius for rounded corners
                   boxShadow: [
@@ -84,9 +84,13 @@ class _AlertPageState extends State<AlertPage> {
                   ],
                 ),
                 // Replace with your desired height
-                child: SingleChildScrollView(child: Padding(
+                child: SingleChildScrollView(
+                    child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                  child: Profile(uid: widget.id, confidential: true,),
+                  child: Profile(
+                    uid: widget.id,
+                    confidential: true,
+                  ),
                 )),
               ),
             ),

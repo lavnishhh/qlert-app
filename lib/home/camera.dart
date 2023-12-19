@@ -4,7 +4,6 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qlert/alert/alertPage.dart';
 
 class CameraApp extends StatefulWidget {
-
   const CameraApp({super.key});
 
   @override
@@ -12,7 +11,6 @@ class CameraApp extends StatefulWidget {
 }
 
 class _CameraAppState extends State<CameraApp> {
-
   MobileScannerController cameraController = MobileScannerController();
 
   @override
@@ -27,6 +25,8 @@ class _CameraAppState extends State<CameraApp> {
 
   @override
   Widget build(BuildContext context) {
+    // cameraController = MobileScannerController();
+
     return MobileScanner(
       // fit: BoxFit.contain,
       controller: cameraController,
@@ -37,9 +37,12 @@ class _CameraAppState extends State<CameraApp> {
           RegExp regExp = RegExp(r'https:\/\/www\.qlert\.in\/[a-zA-Z0-9]{10}');
 
           if (regExp.hasMatch(barcode.rawValue!)) {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => AlertPage(id: barcode.rawValue!.substring(barcode.rawValue!.length - 28))),
+              MaterialPageRoute(
+                  builder: (context) => AlertPage(
+                      id: barcode.rawValue!
+                          .substring(barcode.rawValue!.length - 28))),
             );
             cameraController.dispose();
             print(barcode.rawValue!.substring(barcode.rawValue!.length - 28));
