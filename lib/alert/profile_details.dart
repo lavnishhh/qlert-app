@@ -58,7 +58,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: widget.confidential ? 950 : 1500,
+      height: widget.confidential ? 1000 : 1500,
       child: Column(
         children: [
           Padding(
@@ -140,16 +140,16 @@ class _ProfileState extends State<Profile> {
               crossAxisSpacing: 20,
               mainAxisSpacing: 20,
               children: [
-                itemDashboard('Age', data['age'], Icons.person_2_rounded,
-                    Colors.purple, 18),
+                itemDashboard('Age', data['age'] + ' years',
+                    Icons.person_2_rounded, Colors.purple, 18),
                 itemDashboard('Gender', data['gender'], Icons.male_rounded,
                     Colors.brown, 18),
                 itemDashboard('Blood Group', data['bloodGroup'],
                     Icons.bloodtype, Colors.indigo, 18),
-                itemDashboard(
-                    'Height', data['height'], Icons.height, Colors.teal, 18),
-                itemDashboard('Weight', data['weight'], Icons.scale_rounded,
-                    Colors.blue, 18),
+                itemDashboard('Height', data['height'] + " cm", Icons.height,
+                    Colors.teal, 18),
+                itemDashboard('Weight', data['weight'] + " kg",
+                    Icons.scale_rounded, Colors.blue, 18),
                 itemDashboard('Vehicle No', data['vehicleNumber'],
                     Icons.car_crash_outlined, Colors.red, 18),
               ],

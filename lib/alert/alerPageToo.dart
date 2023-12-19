@@ -16,7 +16,7 @@ class _AlertingState extends State<Alerting>
 
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     )..repeat(reverse: true);
 
     _animation = Tween<double>(begin: 1, end: 1.5).animate(
@@ -33,9 +33,9 @@ class _AlertingState extends State<Alerting>
       appBar: AppBar(
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
-        title: Text('Alerting the Authorities!'),
+        title: const Text('Alerting the Authorities!'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -73,7 +73,7 @@ class _AlertingState extends State<Alerting>
                       decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(20)),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
