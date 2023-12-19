@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Profile extends StatefulWidget {
-
   final String uid;
   final bool confidential;
 
@@ -18,10 +17,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-
   Map<String, dynamic> data = {
-    'email':'Not Found',
-
+    'email': 'Not Found',
     'name': "Not Found",
     'age': "Not Found",
     'gender': "Not Found",
@@ -43,9 +40,12 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-
-    FirebaseFirestore.instance.collection('users').doc(widget.uid).get().then((DocumentSnapshot documentSnapshot){
-      if(documentSnapshot.exists){
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
         setState(() {
           data = documentSnapshot.data() as Map<String, dynamic>;
         });
@@ -57,9 +57,8 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-
     return SizedBox(
-      height: widget.confidential ? 900 : 1500,
+      height: widget.confidential ? 950 : 1500,
       child: Column(
         children: [
           Padding(
@@ -69,9 +68,7 @@ class _ProfileState extends State<Profile> {
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    boxShadow
-                  ]),
+                  boxShadow: [boxShadow]),
               child: Column(
                 children: [
                   Row(
@@ -88,48 +85,53 @@ class _ProfileState extends State<Profile> {
                             color: Colors.white,
                             size: 30,
                           )),
-                      const SizedBox(width: 10,),
+                      const SizedBox(
+                        width: 10,
+                      ),
                       Text(
                         data['name'],
-                        style: const TextStyle(color: Colors.black, fontSize: 30),
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 30),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'uid:${widget.uid}',
-                    style: TextStyle(
-                        color: Colors.grey.shade700, fontSize: 14),
+                    style: TextStyle(color: Colors.grey.shade700, fontSize: 14),
                   )
                 ],
               ),
             ),
           ),
-          widget.confidential ? Container() : Container(
-            // padding: const EdgeInsets.symmetric(horizontal: 30),
-            decoration: const BoxDecoration(
-                borderRadius:
-                BorderRadius.only(topLeft: Radius.circular(200))),
-            child: GridView.count(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20,
-              children: [
-                itemDashboard(
-                    'Mobile', data['mobileNumber'], Icons.call, Colors.deepOrange, 18),
-                itemDashboard('Email', data['email'],
-                    Icons.email_rounded, Colors.green, 14),
-              ],
-            ),
-          ),
+          widget.confidential
+              ? Container()
+              : Container(
+                  // padding: const EdgeInsets.symmetric(horizontal: 30),
+                  decoration: const BoxDecoration(
+                      borderRadius:
+                          BorderRadius.only(topLeft: Radius.circular(200))),
+                  child: GridView.count(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    children: [
+                      itemDashboard('Mobile', data['mobileNumber'], Icons.call,
+                          Colors.deepOrange, 18),
+                      itemDashboard('Email', data['email'], Icons.email_rounded,
+                          Colors.green, 14),
+                    ],
+                  ),
+                ),
           Container(
             // padding: const EdgeInsets.symmetric(horizontal: 30),
             decoration: const BoxDecoration(
-                borderRadius:
-                BorderRadius.only(topLeft: Radius.circular(200))),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(200))),
             child: GridView.count(
               padding: const EdgeInsets.all(0),
               shrinkWrap: true,
@@ -138,75 +140,81 @@ class _ProfileState extends State<Profile> {
               crossAxisSpacing: 20,
               mainAxisSpacing: 20,
               children: [
+                itemDashboard('Age', data['age'], Icons.person_2_rounded,
+                    Colors.purple, 18),
+                itemDashboard('Gender', data['gender'], Icons.male_rounded,
+                    Colors.brown, 18),
+                itemDashboard('Blood Group', data['bloodGroup'],
+                    Icons.bloodtype, Colors.indigo, 18),
                 itemDashboard(
-                    'Age', data['age'], Icons.person_2_rounded, Colors.purple, 18),
-                itemDashboard(
-                    'Gender', data['gender'], Icons.male_rounded, Colors.brown, 18),
-                itemDashboard('Blood Group', data['bloodGroup'], Icons.bloodtype,
-                    Colors.indigo, 18),
-                itemDashboard('Height', data['height'], Icons.height, Colors.teal, 18),
-                itemDashboard(
-                    'Weight', data['weight'], Icons.scale_rounded, Colors.blue, 18),
+                    'Height', data['height'], Icons.height, Colors.teal, 18),
+                itemDashboard('Weight', data['weight'], Icons.scale_rounded,
+                    Colors.blue, 18),
                 itemDashboard('Vehicle No', data['vehicleNumber'],
                     Icons.car_crash_outlined, Colors.red, 18),
               ],
             ),
           ),
-          widget.confidential ? Container() : Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    boxShadow
-                  ]),
-              child: Column(
-                children: [
-                  Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: const BoxDecoration(
+          widget.confidential
+              ? Container()
+              : Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
                         color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.emergency,
-                        color: Colors.red,
-                        size: 30,
-                      )),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(width: 10,),
-                      Text(
-                        'Emergency Contacts',
-                        style: TextStyle(color: Colors.black, fontSize: 30),
-                      ),
-                    ],
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [boxShadow]),
+                    child: Column(
+                      children: [
+                        Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.emergency,
+                              color: Colors.red,
+                              size: 30,
+                            )),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Emergency Contacts',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 30),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              "+91 ${data['emergencyContact1']}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey.shade700, fontSize: 16),
+                            ),
+                            Text(
+                              "+91 ${data['emergencyContact2']}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey.shade700, fontSize: 16),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 20,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        "+91 ${data['emergencyContact1']}",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.grey.shade700, fontSize: 16),
-                      ),
-                      Text(
-                        "+91 ${data['emergencyContact2']}",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.grey.shade700, fontSize: 16),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+                ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
             child: Container(
@@ -214,9 +222,7 @@ class _ProfileState extends State<Profile> {
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    boxShadow
-                  ]),
+                  boxShadow: [boxShadow]),
               child: Column(
                 children: [
                   Container(
@@ -229,19 +235,22 @@ class _ProfileState extends State<Profile> {
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(width: 10,),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Text(
                         'Medical Info',
                         style: TextStyle(color: Colors.black, fontSize: 30),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Text(
                     data['medicalHistory'],
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.grey.shade700, fontSize: 14),
+                    style: TextStyle(color: Colors.grey.shade700, fontSize: 14),
                   )
                 ],
               ),
@@ -254,20 +263,22 @@ class _ProfileState extends State<Profile> {
   }
 
   itemDashboard(String title, String data, IconData iconData, Color background,
-      double size) =>
+          double size) =>
       Container(
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              boxShadow
-            ]),
+            boxShadow: [boxShadow]),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
                 padding: const EdgeInsets.all(10),
-                child: Icon(iconData, color: background, size: 30,)),
+                child: Icon(
+                  iconData,
+                  color: background,
+                  size: 30,
+                )),
             const SizedBox(height: 4),
             Text(
               title,
@@ -282,4 +293,3 @@ class _ProfileState extends State<Profile> {
         ),
       );
 }
-
