@@ -22,7 +22,7 @@ class QRCodePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             QrImageView(
-              data: uid, // Replace with your data
+              data: "https://www.qlert.in/$uid", // Replace with your data
               version: QrVersions.auto,
               size: 300.0,
             ),
