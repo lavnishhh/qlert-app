@@ -19,65 +19,65 @@ class _UserProfilePageState extends State<UserProfilePage> {
       children: [
         Row(
           children: [
-            Expanded(
-              child: GestureDetector(
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                  decoration: BoxDecoration(
-                      color: Colors.teal,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.groups,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            'Add Member',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: GestureDetector(
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                  decoration: BoxDecoration(
-                      color: Colors.teal,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.car_crash_sharp,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            'Add Vehicle',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            // Expanded(
+            //   child: GestureDetector(
+            //     child: Container(
+            //       padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+            //       decoration: BoxDecoration(
+            //           color: Colors.teal,
+            //           borderRadius: BorderRadius.circular(20)),
+            //       child: const Row(
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         children: [
+            //           Icon(
+            //             Icons.groups,
+            //             color: Colors.white,
+            //             size: 30,
+            //           ),
+            //           Expanded(
+            //             child: Center(
+            //               child: Text(
+            //                 'Add Member',
+            //                 style: TextStyle(color: Colors.white),
+            //               ),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(
+            //   width: 10,
+            // ),
+            // Expanded(
+            //   child: GestureDetector(
+            //     child: Container(
+            //       padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+            //       decoration: BoxDecoration(
+            //           color: Colors.teal,
+            //           borderRadius: BorderRadius.circular(20)),
+            //       child: const Row(
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         children: [
+            //           Icon(
+            //             Icons.car_crash_sharp,
+            //             color: Colors.white,
+            //             size: 30,
+            //           ),
+            //           Expanded(
+            //             child: Center(
+            //               child: Text(
+            //                 'Add Vehicle',
+            //                 style: TextStyle(color: Colors.white),
+            //               ),
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
         SizedBox(
@@ -127,14 +127,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
           confidential: false,
         ),
         GestureDetector(
-          onTap: ()async{
+          onTap: () async {
             FirebaseBackend().signOut();
           },
           child: Container(
             padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
             decoration: BoxDecoration(
-                color: Colors.teal,
-                borderRadius: BorderRadius.circular(20)),
+                color: Colors.teal, borderRadius: BorderRadius.circular(20)),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [

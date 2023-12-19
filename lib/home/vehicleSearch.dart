@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:qlert/alert/alertPage.dart';
 
 class VehicleSearch extends StatefulWidget {
   @override
@@ -16,6 +18,7 @@ class _VehicleSearchState extends State<VehicleSearch> {
       'users'; // Replace with the actual collection group name
 
   List<Map<String, dynamic>> searchResults = [];
+  String searchResultId = 'Not found';
 
   void _performSearch() {
     String searchTerm = _recordedText;
@@ -26,11 +29,18 @@ class _VehicleSearchState extends State<VehicleSearch> {
           .where(searchField, isEqualTo: searchTerm)
           .get()
           .then((QuerySnapshot querySnapshot) {
-        setState(() {
-          searchResults = querySnapshot.docs.map((DocumentSnapshot document) {
-            return document.data() as Map<String, dynamic>;
-          }).toList();
-        });
+        if (querySnapshot.docs.isNotEmpty) {
+          searchResultId = querySnapshot.docs.first.id;
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AlertPage(id: searchResultId)));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Vehicle unregistered"),
+          ));
+          searchResultId = 'where bro';
+        }
       }).catchError((error) {
         print('Error: $error');
         // Handle error
@@ -39,11 +49,11 @@ class _VehicleSearchState extends State<VehicleSearch> {
   }
 
   void _recordText() {
-    setState(() {
-      _recordedText = _textController.text;
-    });
+    _recordedText = _textController.text.toUpperCase();
     _performSearch();
-    print(searchResults);
+    print("----------------*----------------");
+    print(searchResultId);
+    print(_recordedText);
   }
 
   @override

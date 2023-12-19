@@ -41,7 +41,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -49,14 +48,18 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        future:
-            FirebaseFirestore.instance.collection('users').doc(widget.uid).get(),
+        future: FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.uid)
+            .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Padding(
               padding: EdgeInsets.fromLTRB(0, 250, 0, 0),
               child: Center(
-                child: CircularProgressIndicator(color: Colors.teal,),
+                child: CircularProgressIndicator(
+                  color: Colors.teal,
+                ),
               ),
             );
           } else if (snapshot.hasError) {
@@ -69,6 +72,11 @@ class _ProfileState extends State<Profile> {
             );
           } else {
             // Data successfully loaded, use it here
+            if (!snapshot.data!.exists) {
+              return Container(
+                child: Text("Not found"),
+              );
+            }
             final data = snapshot.data!.data() as Map<String, dynamic>;
             // Example displaying user's name
             return Column(
@@ -106,7 +114,7 @@ class _ProfileState extends State<Profile> {
                                       tag: 'image-animation',
                                       child: ClipRRect(
                                           borderRadius:
-                                          BorderRadius.circular(50),
+                                              BorderRadius.circular(50),
                                           child: Image.network(
                                             data['picture'],
                                             fit: BoxFit.fill,
@@ -137,30 +145,30 @@ class _ProfileState extends State<Profile> {
                 widget.confidential
                     ? Container()
                     : Container(
-                  // padding: const EdgeInsets.symmetric(horizontal: 30),
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(200))),
-                  child: GridView.count(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                    children: [
-                      itemDashboard('Mobile', data['mobileNumber'],
-                          Icons.call, Colors.deepOrange, 18),
-                      itemDashboard('Email', data['email'],
-                          Icons.email_rounded, Colors.green, 14),
-                    ],
-                  ),
-                ),
+                        // padding: const EdgeInsets.symmetric(horizontal: 30),
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(200))),
+                        child: GridView.count(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 20,
+                          children: [
+                            itemDashboard('Mobile', data['mobileNumber'],
+                                Icons.call, Colors.deepOrange, 18),
+                            itemDashboard('Email', data['email'],
+                                Icons.email_rounded, Colors.green, 14),
+                          ],
+                        ),
+                      ),
                 Container(
                   // padding: const EdgeInsets.symmetric(horizontal: 30),
                   decoration: const BoxDecoration(
                       borderRadius:
-                      BorderRadius.only(topLeft: Radius.circular(200))),
+                          BorderRadius.only(topLeft: Radius.circular(200))),
                   child: GridView.count(
                     padding: const EdgeInsets.all(0),
                     shrinkWrap: true,
@@ -187,66 +195,66 @@ class _ProfileState extends State<Profile> {
                 widget.confidential
                     ? Container()
                     : Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [boxShadow]),
-                    child: Column(
-                      children: [
-                        Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
+                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
                               color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.emergency,
-                              color: Colors.red,
-                              size: 30,
-                            )),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'Emergency Contacts',
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 30),
-                            ),
-                          ],
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [boxShadow]),
+                          child: Column(
+                            children: [
+                              Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.emergency,
+                                    color: Colors.red,
+                                    size: 30,
+                                  )),
+                              const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Emergency Contacts',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 30),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    "+91 ${data['emergencyContact1']}",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.grey.shade700,
+                                        fontSize: 16),
+                                  ),
+                                  Text(
+                                    "+91 ${data['emergencyContact2']}",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.grey.shade700,
+                                        fontSize: 16),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              "+91 ${data['emergencyContact1']}",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.grey.shade700,
-                                  fontSize: 16),
-                            ),
-                            Text(
-                              "+91 ${data['emergencyContact2']}",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.grey.shade700,
-                                  fontSize: 16),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: Container(
@@ -273,7 +281,7 @@ class _ProfileState extends State<Profile> {
                             Text(
                               'Medical Info',
                               style:
-                              TextStyle(color: Colors.black, fontSize: 30),
+                                  TextStyle(color: Colors.black, fontSize: 30),
                             ),
                           ],
                         ),

@@ -51,44 +51,47 @@ class _AlertingState extends State<Alerting>
               ),
             ),
             child: Center(
-                child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(.6),
-                border: Border.all(color: Colors.black),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    spreadRadius: 5,
-                    blurRadius: 10,
-                    offset: const Offset(0, 0),
+                child: Hero(
+              tag: 'alert-add',
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(.6),
+                  border: Border.all(color: Colors.black),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      spreadRadius: 5,
+                      blurRadius: 10,
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                height: MediaQuery.of(context).size.height / 2,
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: Center(
+                  child: GestureDetector(
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add_a_photo_rounded,
+                              size: 30,
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              'Upload pictures',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
+                        )),
                   ),
-                ],
-                borderRadius: BorderRadius.circular(50),
-              ),
-              height: MediaQuery.of(context).size.height / 2,
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: Center(
-                child: GestureDetector(
-                  child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.add_a_photo_rounded,
-                            size: 30,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            'Upload pictures',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ],
-                      )),
                 ),
               ),
             )),

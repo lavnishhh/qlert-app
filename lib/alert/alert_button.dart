@@ -32,34 +32,37 @@ class _BreathingButtonState extends State<BreathingButton>
         final shadowOpacityTween =
             Tween<double>(begin: 0.2, end: 0.8).animate(_animationController);
 
-        return ElevatedButton(
-          onPressed: () {
-            // Add your button action here
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Alerting()));
-          },
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.all(32), // Larger padding for a bigger button
-            primary: Colors.red, // Red button color
-            shape: CircleBorder(), // Circular shape
-            shadowColor: Colors.black.withOpacity(shadowOpacityTween.value),
-            elevation: 30 * _animationController.value,
-          ),
-          child: AnimatedDefaultTextStyle(
-            duration: Duration(milliseconds: 500),
-            style: TextStyle(
-              fontSize: textSizeTween.value,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              shadows: [
-                Shadow(
-                  color: Colors.black,
-                  offset: Offset(0, 0),
-                  blurRadius: 10,
-                ),
-              ],
+        return Hero(
+          tag: 'alert-add',
+          child: ElevatedButton(
+            onPressed: () {
+              // Add your button action here
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Alerting()));
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.all(32), // Larger padding for a bigger button
+              primary: Colors.red, // Red button color
+              shape: CircleBorder(), // Circular shape
+              shadowColor: Colors.black.withOpacity(shadowOpacityTween.value),
+              elevation: 30 * _animationController.value,
             ),
-            child: Text('Alert!'),
+            child: AnimatedDefaultTextStyle(
+              duration: Duration(milliseconds: 500),
+              style: TextStyle(
+                fontSize: textSizeTween.value,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                shadows: [
+                  Shadow(
+                    color: Colors.black,
+                    offset: Offset(0, 0),
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
+              child: Text('Alert!'),
+            ),
           ),
         );
       },
