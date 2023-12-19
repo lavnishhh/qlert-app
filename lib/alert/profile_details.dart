@@ -57,8 +57,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: widget.confidential ? 1000 : 1500,
+    return SingleChildScrollView(
       child: Column(
         children: [
           Padding(

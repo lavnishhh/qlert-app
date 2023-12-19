@@ -15,10 +15,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   SignInState isUserSignedIn = SignInState.loading;
+  Widget sheetWidget = Container();
+  double maxHeight = 0.3;
 
   @override
   void initState() {
     super.initState();
+
+    maxHeight = 0.3;
+    sheetWidget = const SignInPrompts();
 
     Authentication().checkUserSignIn().then((value) {
       setState(() {
@@ -29,20 +34,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Widget sheetWidget = Container();
 
-    double maxHeight = 0.3;
 
     if (isUserSignedIn == SignInState.loading) {
       sheetWidget = const Center(
         child: CircularProgressIndicator(),
       );
-    } else if (isUserSignedIn == SignInState.notSignedIn) {
-      sheetWidget = const SignInPrompts();
-    } else if (isUserSignedIn == SignInState.signedIn) {
-      maxHeight = 1;
-      sheetWidget = UserProfilePage();
+    } else {
+      FirebaseAuth.instance.authStateChanges().listen((User? user) {
+        if(user != null){
+          if(sheetWidget is UserProfilePage){
+            return;
+          }
+          setState(() {
+            maxHeight = 1;
+            sheetWidget = const UserProfilePage();
+          });
+          return;
+        }
+        if(sheetWidget is! SignInPrompts){
+          setState(() {
+            maxHeight = 0.3;
+            sheetWidget = const SignInPrompts();
+          });
+        }
+      });
     }
+    // else if (isUserSignedIn == SignInState.notSignedIn) {
+    //   sheetWidget = const SignInPrompts();
+    // } else if (isUserSignedIn == SignInState.signedIn) {
+    //   maxHeight = 1;
+    //   sheetWidget = const UserProfilePage();
+    // }
 
     return Scaffold(
       body: Stack(
@@ -64,10 +87,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         topRight: Radius.circular(10)),
                     color: Colors.white,
                   ),
-                  padding: EdgeInsets.fromLTRB(
-                      20, 10 + MediaQuery.of(context).viewPadding.top, 20, 10),
-                  child: Center(
-                    child: sheetWidget,
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          width: 50,
+                          height: 4,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade400,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).viewPadding.top, 20, 10),
+                        child: Center(
+                          child: sheetWidget,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );

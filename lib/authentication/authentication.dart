@@ -77,4 +77,21 @@ class Authentication {
     await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update(data);
   }
 
+  Future<SignInState> signOut() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    try {
+      User? user = auth.currentUser;
+      if (user == null) {
+        return SignInState.notSignedIn; // User is already signed out
+      } else {
+        await auth.signOut();
+        return SignInState.notSignedIn; // User signed out successfully
+      }
+    } catch (e) {
+      print('Error checking sign out status: $e');
+      return SignInState.error; // Failed to sign out or error occurred
+    }
+  }
+
 }

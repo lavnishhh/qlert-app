@@ -36,6 +36,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _vehicleNumberController =
       TextEditingController();
 
+  bool loading = false;
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -114,6 +116,15 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
+
+                  if(loading){
+                    return;
+                  }
+
+                  setState(() {
+                    loading = true;
+                  });
+
                   RegExp emailRegExp = RegExp(
                     r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                     caseSensitive: false,
@@ -145,8 +156,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     color: Colors.teal,
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  child: const Center(
-                    child: Text(
+                  child: Center(
+                    child: loading
+                    ? const CircularProgressIndicator(color: Colors.white,)
+                    : const Text(
                       "Sign Up",
                       style: TextStyle(
                         fontSize: 18,
@@ -255,6 +268,9 @@ class _SignUpPageState extends State<SignUpPage> {
     } catch (e) {
       print("Error creating user: $e");
       showToast(message: "Error occurred: $e");
+      setState(() {
+        loading = false;
+      });
     }
   }
 }

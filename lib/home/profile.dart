@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qlert/alert/profile_details.dart';
+import 'package:qlert/authentication/authentication.dart';
 import 'package:qlert/home/qrCode.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -124,6 +125,35 @@ class _UserProfilePageState extends State<UserProfilePage> {
         Profile(
           uid: FirebaseAuth.instance.currentUser!.uid,
           confidential: false,
+        ),
+        GestureDetector(
+          onTap: ()async{
+            Authentication().signOut();
+          },
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+            decoration: BoxDecoration(
+                color: Colors.teal,
+                borderRadius: BorderRadius.circular(20)),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'Sign Out',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.exit_to_app,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ],
+            ),
+          ),
         )
       ],
     );
