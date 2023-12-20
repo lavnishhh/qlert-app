@@ -43,7 +43,7 @@ class EmergencySMSSender {
           'victim': FirebaseAuth.instance.currentUser?.uid,
         };
 
-        DocumentReference documentReference = await FirebaseFirestore.instance.collection('reports').doc('wefwewef');
+        DocumentReference documentReference = await FirebaseFirestore.instance.collection('reports').doc(getRandomString(10));
             documentReference.set(data);
 
         if (images['first'] != null && images['second'] != null) {
