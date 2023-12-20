@@ -110,7 +110,7 @@ class _AlertPageState extends State<AlertPage> {
             top: 110,
             left: 70,
             right: 70,
-            child: BreathingButton(),
+            child: BreathingButton(id: widget.id),
           ),
         ],
       ),

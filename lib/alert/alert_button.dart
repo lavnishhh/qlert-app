@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:qlert/alert/alerPageToo.dart';
 
 class BreathingButton extends StatefulWidget {
+  final String id;
+  BreathingButton({required this.id});
+
   @override
   _BreathingButtonState createState() => _BreathingButtonState();
 }
@@ -12,6 +15,7 @@ class _BreathingButtonState extends State<BreathingButton>
 
   @override
   void initState() {
+
     super.initState();
     _animationController = AnimationController(
       vsync: this,
@@ -38,7 +42,7 @@ class _BreathingButtonState extends State<BreathingButton>
             onPressed: () {
               // Add your button action here
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Alerting()));
+                  context, MaterialPageRoute(builder: (context) => Alerting(id: widget.id)));
             },
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.all(32), // Larger padding for a bigger button

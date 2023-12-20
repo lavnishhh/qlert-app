@@ -11,7 +11,8 @@ import 'package:qlert/alert/emergencySMS.dart';
 import '../main.dart';
 
 class Alerting extends StatefulWidget {
-  const Alerting({super.key});
+  final String id;
+  const Alerting({super.key, required this.id});
 
   @override
   State<Alerting> createState() => _AlertingState();
@@ -24,6 +25,7 @@ class _AlertingState extends State<Alerting>
 
   bool isCameraMode = true;
   bool isCameraInitialized = false;
+  bool isSendingAlert = false;
 
   late CameraController cameraController;
 
@@ -315,10 +317,20 @@ class _AlertingState extends State<Alerting>
                               child: (images['first']!.isNotEmpty && images['second']!.isNotEmpty)
                               ? GestureDetector(
                                 onTap: (){
+                                  setState(() {
+
+                                  });
+                                  isSendingAlert = true;
+
                                   Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position){
 
-                                        EmergencySMSSender().createReport(images, GeoPoint(position.latitude, position.longitude)).then((List<String> numbers){
-                                          EmergencySMSSender().sendEmergencySMS("Hiiii", numbers);
+                                        EmergencySMSSender().createReport(images, GeoPoint(position.latitude, position.longitude), widget.id).then((Map<String, dynamic> data){
+                                          EmergencySMSSender().sendEmergencySMS("Hiiii", data['contacts'], data['id']).then((value){
+                                            isSendingAlert = false;
+                                            setState(() {
+
+                                            });
+                                          });
                                         });
                                   });
                                 },
