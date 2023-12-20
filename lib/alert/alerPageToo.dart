@@ -318,18 +318,21 @@ class _AlertingState extends State<Alerting>
                               ? GestureDetector(
                                 onTap: (){
                                   setState(() {
+                                  isSendingAlert = true;
 
                                   });
-                                  isSendingAlert = true;
 
                                   Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position){
 
                                         EmergencySMSSender().createReport(images, GeoPoint(position.latitude, position.longitude), widget.id).then((Map<String, dynamic> data){
                                           EmergencySMSSender().sendEmergencySMS("Hiiii", data['contacts'], data['id']).then((value){
-                                            isSendingAlert = false;
                                             setState(() {
+                                            isSendingAlert = false;
 
                                             });
+                                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                              content: Text("Alerts sent!"),
+                                            ));
                                           });
                                         });
                                   });
