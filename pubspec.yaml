@@ -49,6 +49,9 @@ dependencies:
   camera: ^0.10.5+7
   camera_android: ^0.10.8+15
   image_cropper: ^5.0.1
+  flutter_sms: ^2.3.3
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
 
 dev_dependencies:
   flutter_test:
