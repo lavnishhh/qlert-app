@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image/image.dart' as img;
 import 'package:camera/camera.dart';
 import 'package:crop/crop.dart';
 import 'package:flutter/material.dart';
+import 'package:qlert/alert/emergencySMS.dart';
 
 import '../main.dart';
 
@@ -312,7 +315,12 @@ class _AlertingState extends State<Alerting>
                               child: (images['first']!.isNotEmpty && images['second']!.isNotEmpty)
                               ? GestureDetector(
                                 onTap: (){
+                                  Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position){
 
+                                        EmergencySMSSender().createReport(images, GeoPoint(position.latitude, position.longitude)).then((List<String> numbers){
+                                          EmergencySMSSender().sendEmergencySMS("Hiiii", numbers);
+                                        });
+                                  });
                                 },
                                 child: const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 20),

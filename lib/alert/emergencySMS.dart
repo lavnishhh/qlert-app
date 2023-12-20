@@ -1,68 +1,75 @@
-import 'package:flutter_sms/flutter_sms.dart';
+
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:qlert/authentication/authentication.dart';
+import 'package:telephony/telephony.dart';
 
 class EmergencySMSSender {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> sendEmergencySMS() async {
+  Future<List<String>> createReport(Map<String, Uint8List?> images, GeoPoint? location) async {
     try {
-      DocumentSnapshot<Map<String, dynamic>> userSnapshot =
-          await _firestore.collection('users').doc('userId').get();
+      DocumentSnapshot<Map<String, dynamic>>? userSnapshot =
+      await _firestore.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).get();
 
-      if (userSnapshot.exists) {
+      if (userSnapshot.exists ?? false) {
         final Map<String, dynamic> userData = userSnapshot.data()!;
-        final String emergencyContact1 = userData['emergencyContact1'];
-        final String emergencyContact2 = userData['emergencyContact2'];
+        final String? emergencyContact1 = userData['emergencyContact1'] as String?;
+        final String? emergencyContact2 = userData['emergencyContact2'] as String?;
 
-        QuerySnapshot<Map<String, dynamic>> reportsSnapshot =
-            await _firestore.collection('reports').get();
-
-        if (reportsSnapshot.docs.isNotEmpty) {
-          final List<String> reportLinks = [];
-          final List<String> locationLinks = [];
-
-          for (QueryDocumentSnapshot<Map<String, dynamic>> doc
-              in reportsSnapshot.docs) {
-            final List<dynamic> images = doc['images'];
-
-            for (String image in images.cast<String>()) {
-              reportLinks.add(image);
-            }
-
-            final GeoPoint? location = doc['location'];
-            if (location != null) {
-              final double latitude = location.latitude;
-              final double longitude = location.longitude;
-
-              final String googleMapsLink =
-                  'https://www.google.com/maps?q=$latitude,$longitude';
-
-              locationLinks.add(googleMapsLink);
-            }
-          }
-
-          final String reportLinksMessage =
-              'Here are the images: ${reportLinks.join(', ')}';
-          final String locationLinkMessage =
-              'Here is the exact location: ${locationLinks.isNotEmpty ? locationLinks.first : ''}';
-          final String message =
-              'Your loved one has been involved in an accident. You are receiving this message since you are an emergency contact.Here are the images and the location:\n$reportLinksMessage\n$locationLinkMessage';
-
-          _sendSMS(message, [emergencyContact1, emergencyContact2]);
+        if (emergencyContact1 == null || emergencyContact2 == null) {
+          return [];
         }
+
+        Map<String, dynamic> data = {
+          'images': [
+            'https://via.placeholder.com/200',
+            'https://via.placeholder.com/200'
+          ],
+          'location': location,
+          'time': Timestamp.now(),
+          'victim': FirebaseAuth.instance.currentUser?.uid,
+        };
+
+        DocumentReference documentReference = await FirebaseFirestore.instance.collection('reports').add(data);
+
+        if (images['first'] != null && images['second'] != null) {
+
+          List<Future<String?>> uploadFutures = [
+            FirebaseBackend().uploadImageToFirebaseStorage(File.fromRawPath(images['first']!), 'reports/${documentReference.id}/image_one'),
+            FirebaseBackend().uploadImageToFirebaseStorage(File.fromRawPath(images['second']!), 'reports/${documentReference.id}/image_two'),
+          ];
+
+          List<String?> results = await Future.wait(uploadFutures);
+
+          // Access results of completed uploads
+          String? imageOne = results[0];
+          String? imageTwo = results[1];
+
+          await documentReference.update({
+            'images': [imageOne, imageTwo]
+          });
+        }
+
+        return [emergencyContact1, emergencyContact2];
       }
     } catch (e) {
       print('Error sending emergency SMS: $e');
     }
+    return [];
   }
 
-  Future<void> _sendSMS(String message, List<String> recipients) async {
-    try {
-      await sendSMS(message: message, recipients: recipients);
-      print('Emergency SMS sent successfully!');
-    } catch (error) {
-      print('Failed to send SMS: $error');
+  Future<void> sendEmergencySMS(String message, List<String> recipients) async {
+
+    for (var address in recipients) {
+      final Telephony telephony = Telephony.instance;
+      telephony.sendSms(
+          to: address,
+          message: "May the force be with you!"
+      );
     }
   }
 }

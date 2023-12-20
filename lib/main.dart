@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:qlert/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:telephony/telephony.dart';
 import 'firebase_options.dart';
 
 List<CameraDescription> _cameras = [];
@@ -9,6 +12,11 @@ List<CameraDescription> _cameras = [];
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _cameras = await availableCameras();
+  final Telephony telephony = Telephony.instance;
+  bool? permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
+  if(!permissionsGranted!){
+    exit(0);
+  }
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
