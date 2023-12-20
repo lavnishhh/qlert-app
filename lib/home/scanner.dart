@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qlert/alert/alertPage.dart';
 
-class CameraApp extends StatefulWidget {
-  const CameraApp({super.key});
+class ScannerCameraApp extends StatefulWidget {
+  const ScannerCameraApp({super.key});
 
   @override
-  State<CameraApp> createState() => _CameraAppState();
+  State<ScannerCameraApp> createState() => _ScannerCameraAppState();
 }
 
-class _CameraAppState extends State<CameraApp> {
+class _ScannerCameraAppState extends State<ScannerCameraApp> {
   MobileScannerController cameraController = MobileScannerController();
 
   @override

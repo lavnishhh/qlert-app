@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qlert/features/user_auth/presentation/pages/sign_up_page.dart';
-import 'package:qlert/home/camera.dart';
+import 'package:qlert/home/scanner.dart';
 import 'package:qlert/home/profile.dart';
 import '../authentication/authentication.dart';
 import '../features/user_auth/presentation/pages/login_page.dart';
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           // Your existing CameraApp or other widgets
-          const CameraApp(),
+          const ScannerCameraApp(),
           DraggableScrollableSheet(
             initialChildSize: 0.3,
             maxChildSize: maxHeight,
