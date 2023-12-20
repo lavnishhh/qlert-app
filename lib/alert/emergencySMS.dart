@@ -38,16 +38,9 @@ class EmergencySMSSender {
 
         if (images['first'] != null && images['second'] != null) {
 
-          List<Future<String?>> uploadFutures = [
-            FirebaseBackend().uploadImageToFirebaseStorage(File.fromRawPath(images['first']!), 'reports/${documentReference.id}/image_one'),
-            FirebaseBackend().uploadImageToFirebaseStorage(File.fromRawPath(images['second']!), 'reports/${documentReference.id}/image_two'),
-          ];
-
-          List<String?> results = await Future.wait(uploadFutures);
-
           // Access results of completed uploads
-          String? imageOne = results[0];
-          String? imageTwo = results[1];
+          String? imageOne = await FirebaseBackend().uploadImageToFirebaseStorage(File.fromRawPath(images['first']!), 'reports/${documentReference.id}/image_one');
+          String? imageTwo = await FirebaseBackend().uploadImageToFirebaseStorage(File.fromRawPath(images['second']!), 'reports/${documentReference.id}/image_two');
 
           await documentReference.update({
             'images': [imageOne, imageTwo]

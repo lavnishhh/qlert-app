@@ -97,7 +97,7 @@ class FirebaseBackend {
     }
   }
 
-  Future<String?> uploadImageToFirebaseStorage(File imageFile,String path) async {
+  Future<String> uploadImageToFirebaseStorage(File imageFile,String path) async {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference ref = storage.ref().child(path);
@@ -109,7 +109,7 @@ class FirebaseBackend {
       return imageUrl;
     } catch (e) {
       print('Error uploading image to Firebase Storage: $e');
-      return null;
+      return "https://via.placeholder.com/200";
     }
   }
 
