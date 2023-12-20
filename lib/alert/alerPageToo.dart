@@ -1,8 +1,9 @@
+import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:image/image.dart' as img;
 import 'package:camera/camera.dart';
+import 'package:crop/crop.dart';
 import 'package:flutter/material.dart';
-import 'package:qlert/home/scanner.dart';
 
 import '../main.dart';
 
@@ -23,7 +24,14 @@ class _AlertingState extends State<Alerting>
 
   late CameraController cameraController;
 
-  Map<String, Uint8List> images = {'first':Uint8List(0), 'second':Uint8List(0)};
+  bool disableCapture = false;
+
+  Map<String, Uint8List> images = {
+    'first': Uint8List(0),
+    'second': Uint8List(0)
+  };
+
+  final CropController controller = CropController(aspectRatio: 1);
 
   @override
   void initState() {
@@ -105,80 +113,107 @@ class _AlertingState extends State<Alerting>
                   SizedBox(
                     height: 100,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Stack(
-                          children: [
-                            SizedBox(
-                              width: 75,
-                              height: 75,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.teal,
-                                          width: 2
-                                      )
-                                  ),
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons.car_crash_sharp,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(40)
-                                ),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(2.0),
-                                    child: Icon(Icons.close, color: Colors.white, size: 20,),
-                                  )
-                              ),
-                            )
-                          ],
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Text("Take two pictures\nto verify the incident"),
                         ),
-                        Stack(
+                        Row(
                           children: [
-                            SizedBox(
-                              width: 75,
-                              height: 75,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.teal,
-                                          width: 2
-                                      )
-                                  ),
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons.car_crash_sharp,
-                                    ),
+                            Stack(
+                              children: [
+                                SizedBox(
+                                  width: 75,
+                                  height: 75,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.teal, width: 2)),
+                                        child: images['first']!.isEmpty
+                                            ? const Center(
+                                          child: Icon(
+                                            Icons.car_crash_sharp,
+                                          ),
+                                        )
+                                            : Image.memory(images['first']!, fit: BoxFit.cover,)),
                                   ),
                                 ),
-                              ),
+                                Positioned(
+                                    right: 0,
+                                    child: images['first']!.isEmpty
+                                        ? Container()
+                                        : Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius:
+                                            BorderRadius.circular(40)),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              images['first'] = Uint8List(0);
+                                            });
+                                          },
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(2.0),
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                              size: 15,
+                                            ),
+                                          ),
+                                        )))
+                              ],
                             ),
-                            Positioned(
-                              right: 0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(40)
+                            Stack(
+                              children: [
+                                SizedBox(
+                                  width: 75,
+                                  height: 75,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.teal, width: 2)),
+                                        child: images['second']!.isEmpty
+                                            ? const Center(
+                                          child: Icon(
+                                            Icons.car_crash_sharp,
+                                          ),
+                                        )
+                                            : Image.memory(images['second']!, fit: BoxFit.cover,)),
+                                  ),
                                 ),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(2.0),
-                                    child: Icon(Icons.close, color: Colors.white, size: 20,),
-                                  )
-                              ),
-                            )
+                                Positioned(
+                                    right: 0,
+                                    child: images['second']!.isEmpty
+                                        ? Container()
+                                        : Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius:
+                                            BorderRadius.circular(40)),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            print("clearing second");
+                                            setState(() {
+                                              images['second'] = Uint8List(0);
+                                            });
+                                          },
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(2.0),
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                              size: 15,
+                                            ),
+                                          ),
+                                        )))
+                              ],
+                            ),
                           ],
                         ),
                       ],
@@ -202,7 +237,7 @@ class _AlertingState extends State<Alerting>
                       child: isCameraInitialized
                           ? Center(
                               child: AspectRatio(
-                                aspectRatio: 1,
+                                aspectRatio: 0.7,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: OverflowBox(
@@ -228,26 +263,71 @@ class _AlertingState extends State<Alerting>
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GestureDetector(
-                          onTap: (){
-                            cameraController.takePicture();
+                          onTap: () async {
+                            setState(() {
+                              disableCapture = true;
+                            });
+
+                            XFile cameraImage =
+                                await cameraController.takePicture();
+
+                            Uint8List image =
+                                File(cameraImage.path).readAsBytesSync();
+
+                            setState(() {
+                              disableCapture = false;
+                            });
+
+                            if (images['first']!.isEmpty) {
+                              setState(() {
+                                images['first'] = image;
+                              });
+                              return;
+                            }
+
+                            if (images['second']!.isEmpty) {
+                              setState(() {
+                                images['second'] = image;
+                              });
+                              return;
+                            }
+
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text(
+                                  "You can only upload two images. Delete another image to take a new one."),
+                            ));
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.teal,
-                              borderRadius: BorderRadius.circular(38)
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.camera,
-                                size: 30,
-                                color: Colors.white,
-                              ),
+                                color: Colors.teal,
+                                borderRadius: BorderRadius.circular(38)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: (images['first']!.isNotEmpty && images['second']!.isNotEmpty)
+                              ? GestureDetector(
+                                onTap: (){
+
+                                },
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 20),),
+                                ),
+                              )
+                              :disableCapture
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                  : const Icon(
+                                      Icons.camera,
+                                      size: 30,
+                                      color: Colors.white,
+                                    ),
                             ),
                           ),
                         )

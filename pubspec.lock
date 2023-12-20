@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.16"
+  archive:
+    dependency: transitive
+    description:
+      name: archive
+      sha256: "7b875fd4a20b165a3084bd2d210439b22ebc653f21cea4842729c0c30c82596b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.4.9"
   async:
     dependency: transitive
     description:
@@ -113,6 +121,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
+  collision:
+    dependency: transitive
+    description:
+      name: collision
+      sha256: "2bd2eb6a9dfc69bc9d92cb3401dcfadb3b8429a261102ec0e59a91c0f5fcab25"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
+  convert:
+    dependency: transitive
+    description:
+      name: convert
+      sha256: "0f08b14755d163f6e2134cb58222dd25ea2a2ee8a195e53983d57c075324d592"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.1"
+  crop:
+    dependency: "direct main"
+    description:
+      name: crop
+      sha256: "9d94ec70fb2a5b1f4c30a686db561ed2395a900e5b17f44a0111f2c70ecf6889"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.5"
   cross_file:
     dependency: transitive
     description:
@@ -121,6 +153,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.3+8"
+  crypto:
+    dependency: transitive
+    description:
+      name: crypto
+      sha256: ff625774173754681d66daaf4a448684fb04b78f902da9cb3d308c19cc5e8bab
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.3"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -288,6 +328,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  image:
+    dependency: "direct main"
+    description:
+      name: image
+      sha256: "028f61960d56f26414eb616b48b04eb37d700cbe477b7fb09bf1d7ce57fd9271"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.3"
+  image_cropper:
+    dependency: "direct main"
+    description:
+      name: image_cropper
+      sha256: f4bad5ed2dfff5a7ce0dfbad545b46a945c702bb6182a921488ef01ba7693111
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.1"
+  image_cropper_for_web:
+    dependency: transitive
+    description:
+      name: image_cropper_for_web
+      sha256: "865d798b5c9d826f1185b32e5d0018c4183ddb77b7b82a931e1a06aa3b74974e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  image_cropper_platform_interface:
+    dependency: transitive
+    description:
+      name: image_cropper_platform_interface
+      sha256: ee160d686422272aa306125f3b6fb1c1894d9b87a5e20ed33fa008e7285da11e
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.0"
   js:
     dependency: transitive
     description:
@@ -344,6 +416,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.3"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      sha256: c15605cd28af66339f8eb6fbe0e541bfe2d1b72d5825efc6598f3e0a31b9ad27
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.2"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -352,6 +432,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.7"
+  pointycastle:
+    dependency: transitive
+    description:
+      name: pointycastle
+      sha256: "7c1e5f0d23c9016c5bbd8b1473d0d3fb3fc851b876046039509e18e0c7485f2c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.7.3"
   qr:
     dependency: transitive
     description:
@@ -461,6 +549,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.1"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      sha256: b015a8ad1c488f66851d762d3090a21c600e479dc75e68328c52774040cf9226
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.5.0"
 sdks:
   dart: ">=3.2.3 <4.0.0"
   flutter: ">=3.13.0"
