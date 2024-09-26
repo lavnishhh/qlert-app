@@ -1,15 +1,22 @@
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:qlert/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import 'package:mobile_scanner/mobile_scanner.dart';
-
+import 'package:telephony/telephony.dart';
 import 'firebase_options.dart';
+
+List<CameraDescription> _cameras = [];
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Obtain a list of the available cameras on the device
+  _cameras = await availableCameras();
+  final Telephony telephony = Telephony.instance;
+  bool? permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
+  if(!permissionsGranted!){
+    exit(0);
+  }
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -24,6 +31,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          fontFamily: 'Inter'
         ),
         home: const HomeScreen());
   }

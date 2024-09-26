@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:qlert/alert/profile_details.dart';
 import 'package:qlert/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:qlert/features/user_auth/presentation/widgets/form_container_widget.dart';
+import 'package:qlert/home/home.dart';
 
 import '../../../global/common/toast.dart';
 import '../../firebase_auth_implementation/firebase_auth_services.dart';
-import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,8 +19,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final FirebaseAuthService _auth = FirebaseAuthService();
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  bool loading = false;
 
   @override
   void dispose() {
@@ -33,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: const Text("Login"),
         backgroundColor: Colors.teal,
       ),
       body: Center(
@@ -42,11 +44,11 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "Login to Q-lert",
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               FormContainerWidget(
@@ -54,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: "Email",
                 isPasswordField: false,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               FormContainerWidget(
@@ -62,19 +64,30 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: "Password",
                 isPasswordField: true,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               GestureDetector(
-                onTap: _signIn,
+                onTap: (){
+                  if(loading){
+                    return;
+                  }
+
+                  setState(() {
+                    loading = true;
+                  });
+                  _signIn();
+                },
                 child: Container(
                   width: double.infinity,
                   height: 50,
                   decoration: BoxDecoration(
                       color: Colors.teal,
-                      borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(50)),
                   child: Center(
-                    child: Text(
+                    child: loading
+                    ? const CircularProgressIndicator(color: Colors.white,)
+                    : const Text(
                       "Login",
                       style: TextStyle(
                           fontSize: 18,
@@ -84,24 +97,24 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account?"),
-                  SizedBox(
+                  const Text("Don't have an account?"),
+                  const SizedBox(
                     width: 5,
                   ),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (context) => SignUpPage()),
+                          MaterialPageRoute(builder: (context) => const SignUpPage()),
                           (route) => false);
                     },
-                    child: Text("Sign Up",
+                    child: const Text("Sign Up",
                         style: TextStyle(
                             color: Colors.teal, fontWeight: FontWeight.bold)),
                   )
@@ -123,9 +136,12 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null) {
       showToast(message: "User is successfully signed in");
       Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) => Profile()), (route) => false);
+          MaterialPageRoute(builder: (context) => const HomeScreen()), (route) => false);
     } else {
       showToast(message: "Some error happened ");
+      setState(() {
+        loading = false;
+      });
     }
   }
 }
